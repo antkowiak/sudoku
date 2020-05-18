@@ -31,10 +31,10 @@ namespace rda
             // the row number (along vertical)
             cell_t row = 0;
 
-            // conver this point_t into a single index into a board_t
+            // convert this point_t into a single index into a board_t
             cell_t idx() const
             {
-                return 9 * row + column;
+                return idx(column, row);
             }
 
             // static method to convert a (col, row) pair into an index into a board_t
@@ -66,30 +66,30 @@ namespace rda
             return start;
         }
 
-        // for a given point p on a sudoku board, return a vector of possible (candidate) values
-        std::vector<cell_t> valid_possibilities(const board_t &board, const point_t &p)
+        // for a given point p on a sudoku board, return a vector of possible candidate values
+        std::vector<cell_t> find_candidates(const board_t &board, const point_t &p)
         {
             // vector to hold the possible candidates. initially set to all possible values
-            std::vector<cell_t> possible = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+            std::vector<cell_t> candidates = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-            // iterate through all rows in p.column, and filter all values out of the "possible" candidates.
+            // iterate through all rows in p.column, and filter all values out of the possible candidates.
             for (cell_t row = 0; row < 9; ++row)
-                possible.erase(std::remove(possible.begin(), possible.end(), board[point_t::idx(p.column, row)]), possible.end());
+                candidates.erase(std::remove(candidates.begin(), candidates.end(), board[point_t::idx(p.column, row)]), candidates.end());
 
-            // iterate through all columns in p.row, and filter all values out of the "possible" candidates.
+            // iterate through all columns in p.row, and filter all values out of the possible candidates.
             for (cell_t col = 0; col < 9; ++col)
-                possible.erase(std::remove(possible.begin(), possible.end(), board[point_t::idx(col, p.row)]), possible.end());
+                candidates.erase(std::remove(candidates.begin(), candidates.end(), board[point_t::idx(col, p.row)]), candidates.end());
 
             // find the top-left most corner of this points 3x3 "mini box"
             const point_t box_start = get_box_start(p);
 
-            // iterate through the points in the 3x3 mini-box, and filter values out of "possible" candidates.
+            // iterate through the points in the 3x3 mini-box, and filter values out of possible candidates.
             for (cell_t col = box_start.column; col < box_start.column + 3; ++col)
                 for (cell_t row = box_start.row; row < box_start.row + 3; ++row)
-                    possible.erase(std::remove(possible.begin(), possible.end(), board[point_t::idx(col, row)]), possible.end());
+                    candidates.erase(std::remove(candidates.begin(), candidates.end(), board[point_t::idx(col, row)]), candidates.end());
 
-            // return vector of possibilities
-            return possible;
+            // return vector of possible candidates
+            return candidates;
         }
 
         // returns true if the board has been completed
@@ -118,7 +118,7 @@ namespace rda
                     continue;
 
                 // build a list of possible candidate values for this cell on the board
-                auto possibilties = valid_possibilities(board, point_t::r_idx(i));
+                auto possibilties = find_candidates(board, point_t::r_idx(i));
 
                 // iterate over list of possible candidate values
                 for (auto pos : possibilties)
