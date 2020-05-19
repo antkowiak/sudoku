@@ -1,5 +1,5 @@
 //
-// main.cpp - Program entry point
+// main.cpp - Program entry point.
 //
 // Written by Ryan Antkowiak (antkowiak@gmail.com)
 //
