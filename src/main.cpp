@@ -22,6 +22,8 @@ int main()
                                0, 0, 0, 0, 0, 0, 0, 7, 4,
                                0, 0, 5, 2, 0, 6, 3, 0, 0};
 
+    //std::fill(board.begin(), board.end(), 0);
+
     // solution
     /*
     rda::sudoku::board_t sol   { 3, 1, 6, 5, 7, 8, 4, 9, 2,
