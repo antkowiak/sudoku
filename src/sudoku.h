@@ -3,7 +3,7 @@
 //
 // sudoku.h - Sudoku solver and utilities
 //
-// Written by Ryan Antkowiak (antkowiak@gmail.com)
+// Written by Ryan Antkowiak 
 //
 
 #include <algorithm>
